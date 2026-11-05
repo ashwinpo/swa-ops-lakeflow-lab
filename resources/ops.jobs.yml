@@ -1,0 +1,34 @@
+resources:
+  jobs:
+    setup_and_refresh:
+      name: swa_ops_setup_and_refresh
+      tasks:
+        - task_key: load_raw_files
+          environment_key: default
+          notebook_task:
+            notebook_path: ../src/setup/00_setup.py
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${resources.schemas.lab_schema.name}
+              shared_schema: ${var.shared_schema}
+        - task_key: refresh_pipeline
+          depends_on:
+            - task_key: load_raw_files
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.ops_pipeline.id}
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+
+    live_weather_refresh:
+      name: swa_ops_live_weather_refresh
+      description: Refreshes the pipeline every 15 minutes so the live METAR table and the risk board stay current. Paused by default.
+      schedule:
+        quartz_cron_expression: "0 */15 * * * ?"
+        timezone_id: America/Chicago
+        pause_status: PAUSED
+      tasks:
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.ops_pipeline.id}

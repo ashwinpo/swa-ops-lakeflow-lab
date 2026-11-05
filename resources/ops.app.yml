@@ -1,0 +1,22 @@
+resources:
+  apps:
+    ops_board:
+      name: ${var.app_name}
+      description: SWA ops lab — live airport weather and historical delay risk
+      source_code_path: ../app
+      user_api_scopes:
+        - sql
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+      config:
+        command: ["streamlit", "run", "app.py"]
+        env:
+          - name: DATABRICKS_WAREHOUSE_ID
+            value_from: sql-warehouse
+          - name: LAB_CATALOG
+            value: ${var.catalog}
+          - name: LAB_SCHEMA
+            value: ${resources.schemas.lab_schema.name}

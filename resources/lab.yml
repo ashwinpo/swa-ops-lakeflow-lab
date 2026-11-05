@@ -1,0 +1,14 @@
+resources:
+  schemas:
+    lab_schema:
+      catalog_name: ${var.catalog}
+      name: ${var.schema}
+      comment: SWA ops Lakeflow lab (reference deployment)
+
+  volumes:
+    raw:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.lab_schema.name}
+      name: raw
+      volume_type: MANAGED
+      comment: Raw files loaded by src/setup/00_setup.py

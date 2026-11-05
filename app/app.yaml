@@ -1,0 +1,9 @@
+# Used when the app is created from the Databricks Apps UI (Lab 4).
+# Add a SQL warehouse resource named "sql-warehouse" and the "sql" user authorization scope.
+command: ["streamlit", "run", "app.py"]
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: LAB_CATALOG
+    value: temp_ai_training_2026
+  # LAB_SCHEMA is optional. When unset the app uses the signed-in user's name, matching Lab 0.

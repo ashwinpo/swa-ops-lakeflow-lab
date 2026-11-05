@@ -1,0 +1,16 @@
+resources:
+  pipelines:
+    ops_pipeline:
+      name: swa_ops_pipeline
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.lab_schema.name}
+      serverless: true
+      photon: true
+      channel: CURRENT
+      root_path: ../src/pipeline
+      libraries:
+        - glob:
+            include: ../src/pipeline/transformations/**
+      configuration:
+        lab.raw_path: /Volumes/${var.catalog}/${resources.schemas.lab_schema.name}/raw
+        lab.metar_mode: auto

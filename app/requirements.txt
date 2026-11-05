@@ -1,0 +1,4 @@
+databricks-sql-connector>=4.0
+databricks-sdk>=0.50
+plotly>=5.24
+pandas

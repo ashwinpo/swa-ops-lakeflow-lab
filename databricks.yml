@@ -1,0 +1,35 @@
+# Reference deployment of the SWA ops Lakeflow lab (the finished solution).
+# Participants follow labs/ instead; instructors use this to deploy and test the whole thing.
+#
+#   databricks bundle deploy -t dev -p <profile>
+#   databricks bundle run setup_and_refresh -t dev -p <profile>
+#   databricks bundle run ops_board -t dev -p <profile>
+
+bundle:
+  name: swa_ops_lakeflow_lab
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Catalog for lab schemas. Must already exist.
+    default: temp_ai_training_2026
+  schema:
+    description: Schema for this deployment. Created by the bundle.
+    default: lab_reference
+  shared_schema:
+    description: Schema holding a shared copy of the raw files (Lab 0 copies from here when present).
+    default: lab_shared
+  warehouse_id:
+    description: SQL warehouse for the app and Genie space.
+    lookup:
+      warehouse: Serverless Starter Warehouse
+  app_name:
+    description: Databricks App name (lowercase letters, numbers, hyphens).
+    default: swa-ops-board-ref
+
+targets:
+  dev:
+    mode: development
+    default: true

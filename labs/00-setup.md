@@ -1,51 +1,71 @@
-# Lab 0 — Setup
+# Mission 0 — Get your bearings and set up
 
-**Goal:** get a copy of the lab files in your workspace folder and load the raw data into your own schema.
+**Time:** 15 min · **You'll use:** Workspace browser, a notebook, Catalog Explorer
 
-## 1. Copy the lab folder
+## The situation
 
-Your instructor has published the lab to `/Workspace/Shared/swa-ops-lakeflow-lab`.
+Southwest's Ops analytics team runs a Tableau dashboard called *Weather Impact on Departures*. It refreshes overnight from an extract, so its "current conditions" can be 24 hours old, and every follow-up question becomes an email to an analyst. You'll rebuild it today on Databricks: live weather straight from the source, history from public flight data, an AI/BI dashboard, a Genie agent people can ask questions, and an app.
 
-1. In the left sidebar, click **Workspace** and open `Shared` → `swa-ops-lakeflow-lab`.
-2. Click the kebab menu (⋮) next to the folder name → **Clone**.
-3. Set the destination to your home folder (`/Workspace/Users/<you>`) and click **Clone**.
+![The legacy dashboard you'll replace](assets/legacy_tableau_mock.png)
 
-Work from your copy from here on. Edits to your copy don't affect anyone else.
+*(This is a mock built for the training. All data in the lab is public.)*
 
-> If your team uses Git folders, you can instead create a Git folder from the repo URL your instructor shares.
+## Where things are
 
-## 2. Run the setup notebook
+Everything is in the left sidebar. You'll use these, in this order:
 
-1. Open `src/setup/00_setup` in your copy.
-2. In the compute selector at the top right, choose **Serverless**.
-3. Leave the widgets at their defaults:
-   - `catalog` = `temp_ai_training_2026`
-   - `schema` = blank (your username is used, e.g. `jane_doe`)
-   - `shared_schema` = `lab_shared`
-4. Click **Run all**.
+| Sidebar item | What it's for | Missions |
+|---|---|---|
+| **Workspace** | Your files and folders. Your home folder is `Users` → your email. | 0 |
+| **Catalog** | Browse catalogs, schemas, tables, and volumes. Preview data. | 0–3 |
+| **Jobs & Pipelines** | Create and run pipelines; schedules. | 1–4 |
+| **SQL Editor** | Run ad-hoc SQL. | 2–3 |
+| **Dashboards** | AI/BI dashboards. | 5 |
+| **Genie** | Genie agents (natural-language Q&A on your data). | 6 |
+| **Apps** (sometimes under **Compute**) | Databricks Apps and Genie App Builder. | 7 |
 
-The notebook:
-- creates the schema `temp_ai_training_2026.<you>` and a volume named `raw`
-- copies three folders into `/Volumes/temp_ai_training_2026/<you>/raw/` from the instructor's shared copy, or downloads them if no shared copy exists:
-  - `bts/` — Southwest flights, one CSV per month
-  - `weather_history/` — hourly weather per airport
-  - `reference/airports.csv` — the 20 airports in the lab
+**Genie Code** is the AI assistant icon in the upper-right corner of most pages. It's your main building tool from Mission 1 on.
 
-The last cell prints your `catalog`, `schema`, and `raw_path`. **Write down `raw_path`**; you need it in Lab 1.
+If you can't find something, use the search bar at the top of the page.
 
-## 3. Look at the files
+## Your goal
 
-In the left sidebar, click **Catalog** → `temp_ai_training_2026` → your schema → **Volumes** → `raw`. Open one BTS file and one weather file and look at the first rows.
+Get your own copy of the lab, load the data into your own schema, and see your progress checker run.
 
-Things to notice:
-- BTS times like `CRSDepTime` are local `hhmm` strings (`0545`), and cancellations have no delay values.
-- Weather files use `M` for missing values. Cloud layers are in `skyc1..3` (cover) and `skyl1..3` (height in feet).
+## Steps
 
-These are the problems the silver layer solves in Lab 1.
+1. **Copy the lab.** Sidebar → **Workspace** → `Shared` → `swa-ops-lakeflow-lab`. Open the ⋮ menu on the folder and copy (or clone) it into your home folder (`Users/<your email>`). Work only in your copy from here on.
+   - If you don't see a copy/clone option for folders, ask your instructor for the Git folder URL and create a Git folder in your home folder instead.
+2. **Run setup.** In your copy, open `src/setup/00_setup`. In the compute picker (top right), choose **Serverless**. Click **Run all**. It takes 1–5 minutes and:
+   - creates your schema `temp_ai_training_2026.<you>` and a volume named `raw`
+   - loads three folders of raw files into the volume (flights, weather history, airports)
+   - creates `my_pipeline/` in your lab folder, with the live-weather data source already inside
+   - installs the **swa-lab-coach** skill in your Genie Code (only you see it)
+3. **Look at your data.** Sidebar → **Catalog** → `temp_ai_training_2026` → your schema → **Volumes** → `raw`. Open a file in `bts/` and one in `weather_history/`. Spend two minutes on them: what would you need to fix before you could chart these?
+4. **Run the checker.** Open `labs/check_progress` and **Run all**.
 
-## Checkpoint
+## Done when
 
-- [ ] `temp_ai_training_2026.<you>` exists and has a `raw` volume
-- [ ] The volume has `bts/` (3 files), `weather_history/` (20 files), `reference/` (1 file)
+- `check_progress` shows **Mission 0 — Setup: DONE**.
+- You can name one data quality problem in the raw files.
 
-Next: [Lab 1 — Build the pipeline](01-pipeline.md)
+## Stuck?
+
+<details><summary>Hint 1</summary>
+
+The setup notebook prints errors at the bottom of the cell that failed. Permission errors (`PERMISSION_DENIED`, `CREATE SCHEMA`) go to your instructor. Everything else: rerun the notebook. It skips what's already done.
+</details>
+
+<details><summary>Hint 2</summary>
+
+Open Genie Code (upper right) in the notebook and ask: *"@swa-lab-coach setup failed with this error: ..."* and paste the error.
+</details>
+
+## How this lab works
+
+- Each mission gives you a **goal** and a **"done when"** test. It doesn't give you code. Use Genie Code: write your own prompts from the goal. Your prompts will be different from your neighbor's, and that's fine.
+- Run **`labs/check_progress`** whenever you like. It checks the *pattern* (is there a streaming table, is it fresh, is there a dashboard on it), not exact names or numbers.
+- When you're stuck, use the **Stuck?** hints in order. Then ask `@swa-lab-coach` in Genie Code. Then ask a neighbor or the instructor.
+- A finished reference version is in `src/pipeline/` and `app/`. Look at it after you've tried, not before.
+
+Next: [Mission 1 — Stream live weather](01-live-stream.md)

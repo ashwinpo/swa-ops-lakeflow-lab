@@ -12,8 +12,10 @@ Ask a workspace or metastore admin to grant these to the participant group:
 | Shared raw files | `USE SCHEMA` and `READ VOLUME` on `temp_ai_training_2026.lab_shared` (after step 3) |
 | SQL warehouse | `CAN USE` on the lab warehouse |
 | Serverless compute | Serverless notebooks, jobs, and pipelines enabled for the group |
-| Apps | Permission to create apps |
-| Genie Code | Partner-powered AI features enabled for the workspace |
+| Genie Code | Partner-powered AI features enabled for the workspace (confirmed on in swa-dev, Nov 2026) |
+| Genie App Builder | Workspace preview **Governed agentic app-building** turned on (admin: user menu → Previews), a lab **App Space**, and **CAN CREATE APP** on it for the group |
+| App Space resources | Share the lab SQL warehouse to the App Space. Apps run as the signed-in user, so learners read their own schema. |
+| Pro-code fallback | Permission to create apps (only if App Builder isn't available) |
 
 ```sql
 GRANT USE CATALOG, CREATE SCHEMA ON CATALOG temp_ai_training_2026 TO `<participant group>`;
@@ -58,13 +60,26 @@ scripts/publish_to_workspace.sh <profile>     # -> /Workspace/Shared/swa-ops-lak
 
 Participants clone this folder into their home folder in Lab 0. Give the participant group `CAN READ` on it.
 
+### 5. Dry run as a learner
+
+Before the session, do Missions 0–7 once with a non-admin account. The bundle tests the code; it doesn't test the clicks. Run `labs/check_progress` at the end; all missions should show DONE.
+
+## How learners get help
+
+1. **Stuck?** hints in each mission (where to look → an approach → the reference file).
+2. `@swa-lab-coach` in Genie Code — installed per learner by `00_setup`, gives hints rather than answers. Source: `labs/coach/SKILL.md`.
+3. `labs/check_progress` — tells them what's done and gives a hint for each unmet check.
+4. A neighbor, then you.
+
 ## During the session
 
 Common issues:
 
 | Symptom | Cause / fix |
 |---|---|
-| `No module named 'utilities'` in the pipeline | The `register_pickle_by_value` line is missing from `01_bronze_metar_live.py`. |
+| `No module named 'utilities'` in the pipeline | Pipeline root folder isn't `my_pipeline/`. Settings → root folder. (`metar_source.py` registers itself for pickling; the root folder just has to be on the path.) |
+| No **Build** tab under Apps | Governed agentic app-building preview off, or learner not on the App Space. Use the pro-code fallback in Mission 7. |
+| Dashboard live panel is stale | Dashboard cache. Add a dashboard schedule, or click Refresh. |
 | `lab.raw_path` unresolved / path not found | Pipeline configuration key missing or misspelled. Settings → Configuration. |
 | `bronze_metar_live` rows all `source = 'synthetic'` | aviationweather.gov unreachable from serverless at that moment. The lab still works; the expectation counts these rows. |
 | App shows "Could not read ... gold_live_delay_risk" | Pipeline not run to completion, or the sidebar schema isn't theirs. |

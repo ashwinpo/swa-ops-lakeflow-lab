@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Lab 0 — Setup
+# MAGIC # Mission 0 — Setup
 # MAGIC
 # MAGIC Creates your schema and a `raw` volume, then loads three public datasets into the volume:
 # MAGIC
@@ -21,6 +21,7 @@ dbutils.widgets.text("catalog", "temp_ai_training_2026", "Catalog")
 dbutils.widgets.text("schema", "", "Schema (blank = your username)")
 dbutils.widgets.text("shared_schema", "lab_shared", "Shared schema to copy from")
 dbutils.widgets.text("months", "2026-06,2026-07,2026-08", "BTS months (YYYY-MM)")
+dbutils.widgets.dropdown("install_helpers", "true", ["true", "false"], "Create my_pipeline/ and install the lab coach")
 
 import re
 
@@ -196,9 +197,40 @@ if not copy_from_shared("weather_history"):
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ## Your pipeline folder and the lab coach
+# MAGIC - `my_pipeline/` (next to this lab's `labs/` folder) is where your pipeline code goes in Mission 1.
+# MAGIC   It already contains `utilities/metar_source.py`, the custom live-weather data source.
+# MAGIC - The **swa-lab-coach** Genie Code skill gives hints when you're stuck. It's installed in your own
+# MAGIC   Genie Code skills folder and only you see it. Use it with `@swa-lab-coach` in any Genie Code chat.
+
+# COMMAND ----------
+
+if dbutils.widgets.get("install_helpers") == "true":
+    nb_path = dbutils.notebook.entry_point.getDbutils().notebook().getContext().notebookPath().get()
+    lab_root = "/Workspace" + nb_path.rsplit("/src/setup/", 1)[0]
+    user = spark.sql("SELECT current_user()").first()[0]
+
+    pipeline_dir = f"{lab_root}/my_pipeline"
+    os.makedirs(f"{pipeline_dir}/utilities", exist_ok=True)
+    os.makedirs(f"{pipeline_dir}/transformations", exist_ok=True)
+    src = f"{lab_root}/src/pipeline/utilities/metar_source.py"
+    dst = f"{pipeline_dir}/utilities/metar_source.py"
+    if not os.path.exists(dst):
+        shutil.copyfile(src, dst)
+    print(f"Pipeline folder ready: {pipeline_dir}")
+
+    skill_dir = f"/Workspace/Users/{user}/.assistant/skills/swa-lab-coach"
+    os.makedirs(skill_dir, exist_ok=True)
+    shutil.copyfile(f"{lab_root}/labs/coach/SKILL.md", f"{skill_dir}/SKILL.md")
+    print(f"Lab coach installed: {skill_dir}/SKILL.md")
+
+# COMMAND ----------
+
 for folder in ["bts", "weather_history", "reference"]:
     files = sorted(os.listdir(f"{raw_path}/{folder}"))
     size = sum(os.path.getsize(f"{raw_path}/{folder}/{f}") for f in files) / 1e6
     print(f"{folder:16s} {len(files):3d} files  {size:7.1f} MB")
 
-print(f"\nDone. Use these values in Lab 1:\n  catalog  = {catalog}\n  schema   = {schema}\n  raw_path = {raw_path}")
+print(f"\nDone. Write these down for Mission 1:\n  catalog  = {catalog}\n  schema   = {schema}\n  raw_path = {raw_path}")
+print("\nNext: open labs/check_progress and run it. Mission 0 should show DONE.")

@@ -26,26 +26,35 @@ IEM weather CSVs ──(Auto Loader)──► bronze_weather_history ──► s
                                                                                          Genie space ◄──┘
 ```
 
-## Labs
+## Missions
 
-| # | Lab | You learn | Time |
+| # | Mission | You learn | Time |
 |---|---|---|---|
-| 0 | [Setup](labs/00-setup.md) | Workspace folder, schema, volume, loading raw files | 10 min |
-| 1 | [Build the pipeline](labs/01-pipeline.md) | Lakeflow Pipelines Editor, streaming tables, materialized views, expectations, custom data sources, Auto Loader | 40 min |
-| 2 | [Extend and debug with Genie Code](labs/02-genie-code.md) | Genie Code in the pipeline editor and SQL editor: explain, generate, fix, review diffs | 30 min |
-| 3 | [Ask questions with Genie](labs/03-genie-space.md) | Genie space on the gold tables, instructions, sample questions | 15 min |
-| 4 | [Ship an app](labs/04-app.md) | Databricks Apps: create, deploy, user authorization, add a feature | 30 min |
+| 0 | [Get your bearings and set up](labs/00-setup.md) | Where things are, schema and volume, raw files | 15 min |
+| 1 | [Stream live weather](labs/01-live-stream.md) | Pipelines Editor, streaming tables, custom data sources, Genie Code | 25 min |
+| 2 | [Bring in history and clean it](labs/02-history.md) | Auto Loader, materialized views, pipeline configuration, prompting with context | 30 min |
+| 3 | [Join weather to flights, add quality rules](labs/03-join-quality.md) | Joins, expectations, fixing failures with Genie Code | 25 min |
+| 4 | [Keep it live](labs/04-keep-it-live.md) | Scheduled vs continuous pipelines, freshness and cost | 10 min |
+| 5 | [Rebuild the dashboard with AI](labs/05-dashboard.md) | AI/BI dashboards with Genie Code, publishing, refresh schedules, Tableau migration | 30 min |
+| 6 | [Decide where Genie lives](labs/06-genie.md) | Dashboard Genie vs standalone Genie agent vs Genie in an app | 20 min |
+| 7 | [Build an app with Genie App Builder](labs/07-app.md) | Genie App Builder, App Spaces, user authorization, sharing | 30 min |
+| — | [Wrap-up](labs/08-wrap-up.md) | Show and tell, patterns, cleanup | 10 min |
 
-Each lab has a finished version in this repo. If you get stuck, compare with:
-- Pipeline: [`src/pipeline/`](src/pipeline/)
-- App: [`app/`](app/)
+Each mission gives a goal, a "done when" test, prompt ingredients (not finished prompts), and a hint ladder. Learners write their own prompts.
+
+**Self-service help**
+- `labs/check_progress` — notebook that checks each learner's work (by pattern, not by exact names) and gives a hint for each unmet check.
+- `@swa-lab-coach` — a Genie Code skill installed for each learner by the setup notebook. Gives hints, not answers.
+- `AGENTS.md` — context Genie Code reads automatically when working in the lab folder (data dictionary, definitions, conventions).
+- Reference solution: `src/pipeline/` (pipeline) and `app/` (pro-code app).
 
 ## Prerequisites
 
 - Access to a Databricks workspace with serverless compute, Unity Catalog, and Databricks Apps (swa-dev for SWA participants)
 - `USE CATALOG` and `CREATE SCHEMA` on the lab catalog (`temp_ai_training_2026` on swa-dev)
 - `CAN USE` on a SQL warehouse
-- Genie Code enabled in the workspace (Labs 2–3)
+- Genie Code with partner-powered AI features enabled (Missions 1–5)
+- Genie App Builder: the *Governed agentic app-building* preview and a lab App Space (Mission 7). See the instructor guide.
 
 ## Instructors
 
@@ -54,12 +63,13 @@ See [docs/INSTRUCTOR.md](docs/INSTRUCTOR.md) for the one-command reference deplo
 ## Repo layout
 
 ```
-labs/                     Step-by-step instructions
-src/setup/00_setup.py     Lab 0 notebook: schema, volume, raw file download
+AGENTS.md                 Context Genie Code reads automatically
+labs/                     Missions, check_progress notebook, coach skill, assets
+src/setup/00_setup.py     Mission 0 notebook: schema, volume, raw files, my_pipeline/, coach skill
 src/pipeline/             Finished pipeline (root folder for the Lakeflow Pipelines Editor)
   utilities/metar_source.py     Custom PySpark data source (batch + streaming)
   transformations/              Bronze, silver, gold
-app/                      Finished Streamlit app
+app/                      Reference Streamlit app (pro-code fallback for Mission 7)
 resources/, databricks.yml      Bundle definition (`databricks bundle`) for the reference deployment
 docs/INSTRUCTOR.md        Instructor guide
 ```

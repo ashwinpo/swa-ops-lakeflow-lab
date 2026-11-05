@@ -14,3 +14,4 @@ resources:
       configuration:
         lab.raw_path: /Volumes/${var.catalog}/${resources.schemas.lab_schema.name}/raw
         lab.metar_mode: auto
+        lab.stations: US

@@ -11,6 +11,7 @@ resources:
               catalog: ${var.catalog}
               schema: ${resources.schemas.lab_schema.name}
               shared_schema: ${var.shared_schema}
+              install_helpers: "false"
         - task_key: refresh_pipeline
           depends_on:
             - task_key: load_raw_files

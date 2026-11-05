@@ -1,7 +1,7 @@
 """
 Custom PySpark data source for live airport weather (METAR) observations.
 
-Usage:
+Usage (in a pipeline file under transformations/):
     from utilities.metar_source import MetarDataSource
     spark.dataSource.register(MetarDataSource)
 
@@ -9,7 +9,8 @@ Usage:
     spark.read.format("metar").load()                                          # batch
 
 Options:
-    stations  Comma-separated ICAO station IDs. Defaults to a set of Southwest airports.
+    stations  Comma-separated ICAO station IDs, or "US" for every US reporting station
+              (about 2,000; new reports arrive every few minutes). Defaults to 20 Southwest airports.
     mode      auto      -> try the aviationweather.gov bulk file, then its API, then synthetic data
               live      -> bulk file, then API; fail if both are down
               synthetic -> generated observations only (no network calls)
@@ -21,12 +22,14 @@ US government source. No API key is needed.
 
 import csv
 import gzip
+import sys
 import io
 import json
 import random
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
+from pyspark import cloudpickle
 from pyspark.sql.datasource import (
     DataSource,
     DataSourceReader,
@@ -104,6 +107,15 @@ def _flight_category(ceiling_ft, visibility_mi):
     return "VFR"
 
 
+US_PREFIXES = ("K", "PA", "PH", "TJ")   # contiguous US, Alaska, Hawaii, Puerto Rico
+
+
+def _wanted(station, stations):
+    if "US" in stations:
+        return station.startswith(US_PREFIXES) and len(station) == 4
+    return station in stations
+
+
 def _http_get(url, timeout):
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -133,7 +145,7 @@ def fetch_from_cache(stations, timeout):
     now = datetime.now(timezone.utc)
     rows = []
     for r in reader:
-        if len(r) < len(header) or r[col["station_id"]] not in stations:
+        if len(r) < len(header) or not _wanted(r[col["station_id"]], stations):
             continue
         layers = [(r[c], r[b]) for c, b in zip(covers, bases)]
         ceiling = _ceiling(layers)
@@ -153,6 +165,8 @@ def fetch_from_cache(stations, timeout):
 
 def fetch_from_api(stations, timeout):
     """JSON API. Used when the bulk file is unavailable."""
+    if "US" in stations:
+        stations = set(DEFAULT_STATIONS.split(","))
     data = json.loads(_http_get(API_URL.format(ids=",".join(sorted(stations))), timeout))
     now = datetime.now(timezone.utc)
     rows = []
@@ -179,6 +193,8 @@ def synthetic_observations(stations):
     obs = now.replace(minute=53, second=0, microsecond=0)
     if obs > now:
         obs -= timedelta(hours=1)
+    if "US" in stations:
+        stations = set(DEFAULT_STATIONS.split(","))
     rows = []
     for station in sorted(stations):
         rnd = random.Random(f"{station}-{obs:%Y%m%d%H}")
@@ -292,3 +308,9 @@ class MetarStreamReader(SimpleDataSourceStreamReader):
 
     def commit(self, end):
         pass
+
+
+# Spark runs data sources in a separate Python worker that can't import files from the
+# pipeline folder. Pickling this module by value ships its code to that worker, so the
+# source works from utilities/ without being installed as a package.
+cloudpickle.register_pickle_by_value(sys.modules[__name__])

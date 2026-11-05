@@ -1,15 +1,10 @@
 # Live airport weather, streamed through a custom PySpark data source.
 # The source code is in ../utilities/metar_source.py.
 
-from pyspark import cloudpickle
 from pyspark import pipelines as dp
 
-from utilities import metar_source
 from utilities.metar_source import DEFAULT_STATIONS, MetarDataSource
 
-# Spark runs the data source in a separate Python worker that can't see the pipeline's
-# utilities/ folder. Pickling the module by value ships its code to that worker.
-cloudpickle.register_pickle_by_value(metar_source)
 spark.dataSource.register(MetarDataSource)
 
 STATIONS = spark.conf.get("lab.stations", DEFAULT_STATIONS)

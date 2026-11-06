@@ -23,14 +23,23 @@ Apps aren't in the workspace sidebar anymore. Open the **app switcher** (the 9-d
 
 ![Apps moved to the app switcher](assets/m7_apps_new_home.png)
 
-Genie App Builder builds apps inside an **App Space** that your instructor set up for the training. In Databricks Apps you should see a **Build** option and **App Spaces**. If you only see **Apps** and **Create app**, tell your instructor: the workspace needs the *Governed agentic app-building* preview, and you need access to the lab App Space.
+Genie App Builder builds apps inside an **App Space** that your instructor set up for the training. In Databricks Apps the left sidebar should show **Build**, **Apps**, and **App Spaces**. If you only see **Apps** and **Create app**, tell your instructor: the workspace needs the *Governed agentic app-building* preview, and you need access to the lab App Space.
 
 ## Steps (the what, not the how)
 
-1. **Databricks Apps** → **Build** → pick the lab App Space → name the app `<you>-weather-watch`.
-2. Describe the app. Look at the preview. Ask for changes until it does what the duty manager needs.
-3. **Deploy** it. Open it, try it, and **share** it with a neighbor (**Can use**).
-4. Ask your neighbor to use it without explanation for one minute. What confused them? Fix one thing.
+1. **Databricks Apps** → **Build**. Check the App Space shown under the prompt box (click it to switch to the lab space).
+
+   ![Genie App Builder](assets/m7_build.png)
+
+2. Describe the app and send. App Builder plans, writes the code, and starts a preview. This takes 5–10 minutes the first time; you can watch its steps on the left.
+3. When the preview says **Sign in to see your app preview**, click **Sign in** and then **Authorize** on the *Permission Requested* page. This lets the app query data as you. It's a one-time step per app.
+4. Try it in the preview. Ask for changes until it does what the duty manager needs.
+5. **Publish** it (top right of the builder). Then **share** it with a neighbor (**Can use**).
+6. Ask your neighbor to use it without explanation for one minute. What confused them? Fix one thing.
+
+What one result looked like (yours will differ):
+
+![Station Weather Watch](assets/m7_app_result.png)
 
 ### Prompt ingredients
 
@@ -49,7 +58,7 @@ Genie App Builder builds apps inside an **App Space** that your instructor set u
 ## Things to notice
 
 - **Who is the app?** Apps in an App Space run with the signed-in user's permissions (or resources an admin shared to the space). If your neighbor sees "no data", what grant would they need on your schema?
-- **Where does the watch list live?** Micro apps lose in-memory state when they scale down. Ask Genie App Builder where it stored the watch list, and what happens tomorrow morning. A real version would write to a table or Lakebase.
+- **Where does the watch list live?** Ask Genie App Builder. In our test it chose the browser's local storage: it survives a reload, but another manager on another laptop can't see it. A shared watch list would need a table or Lakebase. Which does Ops need?
 - **Genie in the app**: if you chose a standalone Genie agent in Mission 6, ask App Builder to add an "Ask a question" box that uses it.
 
 ## Stuck?

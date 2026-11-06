@@ -86,7 +86,9 @@ WHERE rn = 1;
 CREATE OR REFRESH MATERIALIZED VIEW silver_metar_latest
 COMMENT "Most recent live METAR per airport."
 AS SELECT
-  substring(station_id, 2)  AS airport,
+  -- Only contiguous-US K stations map to a 3-letter code (KDAL -> DAL). With stations=US the feed also
+  -- has Alaska/Hawaii codes like PATL, which would collide with ATL if we just dropped the first letter.
+  CASE WHEN station_id LIKE 'K___' THEN substring(station_id, 2) END AS airport,
   station_id,
   observation_time,
   temp_c, wind_dir_degrees, wind_speed_kt, wind_gust_kt, visibility_mi, ceiling_ft,

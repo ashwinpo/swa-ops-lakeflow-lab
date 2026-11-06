@@ -38,7 +38,7 @@ The **Schedule** button is the calendar icon in the pipeline editor's top bar, n
 
 <details><summary>Hint 2</summary>
 
-Live station IDs have a `K` prefix (`KDAL`), history uses `DAL`. Pick the latest report per station with `ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY observation_time DESC)`.
+Live station IDs are 4-letter ICAO codes (`KDAL`); history uses `DAL`. Join on the `icao` column in `airports.csv` rather than chopping off the first letter: with every US station streaming, Alaska's `PATL` would otherwise collide with Atlanta's `ATL`. Pick the latest report per station with `ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY observation_time DESC)`.
 </details>
 
 <details><summary>Hint 3</summary>

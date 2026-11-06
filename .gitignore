@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .DS_Store
 .venv/
+
+# Created per learner by src/setup/00_setup
+my_pipeline/

@@ -71,6 +71,6 @@ SELECT
   b.clear_pct_dep_delayed_15,
   ROUND(h.pct_dep_delayed_15 - b.clear_pct_dep_delayed_15, 1) AS delay_pts_vs_clear
 FROM dim_airports a
-LEFT JOIN silver_metar_latest l ON a.airport = l.airport
+LEFT JOIN silver_metar_latest l ON a.icao = l.station_id
 LEFT JOIN hist h ON h.airport = l.airport AND h.flight_category = l.flight_category AND h.thunderstorm = l.thunderstorm
 LEFT JOIN baseline b ON b.airport = a.airport;

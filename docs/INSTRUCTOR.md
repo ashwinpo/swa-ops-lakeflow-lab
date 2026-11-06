@@ -12,7 +12,7 @@ Ask a workspace or metastore admin to grant these to the participant group:
 | Shared raw files | `USE SCHEMA` and `READ VOLUME` on `temp_ai_training_2026.lab_shared` (after step 3) |
 | SQL warehouse | `CAN USE` on the lab warehouse |
 | Serverless compute | Serverless notebooks, jobs, and pipelines enabled for the group |
-| Genie Code | Partner-powered AI features enabled for the workspace (confirmed on in swa-dev, Nov 2026) |
+| Genie Code | Partner-powered AI features enabled for the account and workspace |
 | Genie App Builder | Workspace preview **Governed agentic app-building** turned on (admin: user menu → Previews), a lab **App Space**, and **CAN CREATE APP** on it for the group |
 | App Space resources | Share the lab SQL warehouse to the App Space. Apps run as the signed-in user, so learners read their own schema. |
 | Pro-code fallback | Permission to create apps (only if App Builder isn't available) |
@@ -58,9 +58,17 @@ Then grant `USE SCHEMA` and `READ VOLUME` on `temp_ai_training_2026.lab_shared` 
 scripts/publish_to_workspace.sh <profile>     # -> /Workspace/Shared/swa-ops-lakeflow-lab
 ```
 
-Participants clone this folder into their home folder in Lab 0. Give the participant group `CAN READ` on it.
+Participants clone this folder into their home folder in Mission 0 (or create a Git folder from the GitHub repo). Give the participant group `CAN READ` on it.
 
-### 5. Dry run as a learner
+### 5. Set up Genie App Builder (only for optional Mission 7)
+
+1. An admin turns on **Governed agentic app-building** (user menu → Previews).
+2. App switcher (9-dot grid) → **Databricks Apps** → **App Spaces** → **Create app space** (e.g. `swa-lab`). Add the lab SQL warehouse as a shared resource and give the participant group **CAN CREATE APP**.
+3. Check: Databricks Apps → **Build** shows your App Space under the prompt box.
+
+Apps built here query as the signed-in user, so learners only see tables they can read.
+
+### 6. Dry run as a learner
 
 Before the session, do Missions 0–7 once with a non-admin account. The bundle tests the code; it doesn't test the clicks. Run `labs/check_progress` at the end; all missions should show DONE.
 
@@ -96,7 +104,7 @@ Then have participants (or an admin) drop their schemas and delete their apps an
 
 ## Why not OpenSky
 
-The original blog streams ADS-B aircraft positions from the OpenSky Network. Tested from swa-dev serverless on 2026-11-04:
+The original blog streams ADS-B aircraft positions from the OpenSky Network. Tested from Databricks serverless compute on AWS (us-east-1) on 2026-11-04:
 - DNS resolves, but TCP connections to OpenSky (194.209.200.34:443) time out. Other public APIs (PyPI, GitHub, aviationweather.gov, weather.gov) work from the same compute, and OpenSky works from a laptop. The likely cause is OpenSky blocking cloud provider IP ranges. A workspace egress rule hasn't been ruled out.
 - OpenSky data is licensed for non-commercial research use.
 

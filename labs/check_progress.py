@@ -144,6 +144,25 @@ for pid, _, _ in pipelines:
             WHERE event_type = 'flow_progress'""")[0].n)
     except Exception:
         pass
+# Rules only show up in the event log after they've processed rows, so also count the ones declared in code
+expect_re = re.compile(r"CONSTRAINT\s+\w+\s+EXPECT|@\w+\.expect(?:_or_drop|_or_fail|_all\w*)?\(", re.I)
+n_declared = 0
+for pid, _, spec in pipelines:
+    # Read via REST: older SDKs in the notebook environment don't expose root_path
+    root = (w.api_client.do("GET", f"/api/2.0/pipelines/{pid}").get("spec") or {}).get("root_path")
+    if not root:
+        continue
+    try:
+        for obj in w.workspace.list(root, recursive=True):
+            if obj.path and obj.path.endswith((".py", ".sql")) and "/transformations/" in obj.path:
+                try:
+                    with open("/Workspace" + obj.path if not obj.path.startswith("/Workspace") else obj.path) as f:
+                        n_declared += len(expect_re.findall(f.read()))
+                except Exception:
+                    pass
+    except Exception:
+        pass
+n_expect = max(n_expect, n_declared)
 check(3, "Data quality expectations in the pipeline (3+)", n_expect >= 3, f"{n_expect} expectations",
       "Add rules with CONSTRAINT ... EXPECT (SQL) or @dp.expect (Python). Decide: warn, drop, or fail?")
 
@@ -171,6 +190,9 @@ if live_t and "ingest_time" in columns[live_t]:
 # COMMAND ----------
 
 # --- Mission 5: dashboard -----------------------------------------------------------------------
+schema_re = re.compile(r"[.`]" + re.escape(schema) + r"[.`]")
+# Tables carrying live observations: the stream itself and anything built from it
+live_tables = [t for t, cols in columns.items() if "observation_time" in cols]
 dashboards = []
 for d in w.lakeview.list():
     if d.create_time and datetime.fromisoformat(d.create_time.replace("Z", "+00:00")) < recent:
@@ -179,7 +201,7 @@ for d in w.lakeview.list():
         full = w.lakeview.get(d.dashboard_id)
     except Exception:
         continue
-    if full.serialized_dashboard and schema in full.serialized_dashboard and (full.path or "").startswith(f"/Users/{me}"):
+    if full.serialized_dashboard and schema_re.search(full.serialized_dashboard) and (full.path or "").startswith(f"/Users/{me}"):
         dashboards.append(full)
 check(5, "An AI/BI dashboard on your tables", dashboards, ", ".join(d.display_name for d in dashboards),
       "New → Dashboard, then describe what you want to Genie Code. Reference tables with @.")
@@ -187,7 +209,7 @@ widgets, published, sched, uses_live = 0, False, False, False
 for d in dashboards:
     sd = json.loads(d.serialized_dashboard)
     widgets = max(widgets, sum(len(p.get("layout", [])) for p in sd.get("pages", [])))
-    uses_live = uses_live or bool(live_t and live_t in d.serialized_dashboard) or "metar" in d.serialized_dashboard.lower()
+    uses_live = uses_live or any(re.search(r"[.`]" + re.escape(t) + r"\b", d.serialized_dashboard) for t in live_tables)
     try:
         w.lakeview.get_published(d.dashboard_id)
         published = True
@@ -218,13 +240,15 @@ mine = []
 for s in spaces[:150]:
     try:
         full = w.api_client.do("GET", f"/api/2.0/genie/spaces/{s['space_id']}", query={"include_serialized_space": "true"})
-        if schema in (full.get("serialized_space") or ""):
+        if schema_re.search(full.get("serialized_space") or ""):
             mine.append(s["title"])
     except Exception:
         pass
 check(6, "Genie is answering questions on your data", mine or published,
       ("standalone: " + ", ".join(mine)) if mine else ("dashboard Genie (published dashboard)" if published else ""),
-      "Either publish your dashboard with Enable Genie on, or create a standalone Genie agent. Mission 6 asks you to pick and explain why.")
+      "Publish your dashboard (Mission 5), then on the published view hover a chart and click the Ask Genie sparkle icon.")
+
+check(6, "Bonus: standalone Genie agent", mine, ", ".join(mine), "Optional. Sidebar → Genie Agents → New.")
 
 # --- Mission 7: app -----------------------------------------------------------------------------
 apps = [a for a in w.apps.list()

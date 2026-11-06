@@ -12,7 +12,17 @@ The lab uses only public data:
 
 The question the lab answers: **how much does weather at the departure airport change Southwest's delay rate, and what does that mean for the airports reporting bad weather right now?**
 
-> Adapted from the Databricks blog [Processing millions of events from thousands of aircraft with one declarative pipeline](https://www.databricks.com/blog/processing-millions-events-thousands-aircraft-one-declarative-pipeline). The original reads ADS-B positions from the OpenSky Network. OpenSky drops connections from cloud IP ranges (tested from swa-dev serverless, Nov 2026) and is licensed for non-commercial use only, so this version streams public weather data instead. The custom data source pattern is the same.
+> Adapted from the Databricks blog [Processing millions of events from thousands of aircraft with one declarative pipeline](https://www.databricks.com/blog/processing-millions-events-thousands-aircraft-one-declarative-pipeline). The original reads ADS-B positions from the OpenSky Network. OpenSky drops connections from cloud IP ranges (tested from Databricks serverless compute on AWS, Nov 2026) and is licensed for non-commercial use only, so this version streams public weather data instead. The custom data source pattern is the same.
+
+## Start here (learners)
+
+1. **Get the lab into your workspace.** Either:
+   - **From GitHub:** Workspace → your home folder → **Create** → **Git folder** → paste this repo's URL → **Create Git folder**. Name it `swa-ops-lakeflow-lab`.
+   - **From your instructor's copy:** Workspace → `Shared` → `swa-ops-lakeflow-lab` → ⋮ → **Clone** into your home folder.
+2. Open [`labs/00-setup.md`](labs/00-setup.md) and follow Mission 0. It walks you through the rest.
+3. Run `labs/check_progress` whenever you want to see where you are. Stuck? Use the hints in each mission, then ask `@swa-lab-coach` in Genie Code.
+
+Plan for about 3 hours for Missions 0–6. Mission 7 is optional.
 
 ## What you build
 
@@ -50,8 +60,8 @@ Each mission gives a goal, a "done when" test, prompt ingredients (not finished 
 
 ## Prerequisites
 
-- Access to a Databricks workspace with serverless compute, Unity Catalog, and Databricks Apps (swa-dev for SWA participants)
-- `USE CATALOG` and `CREATE SCHEMA` on the lab catalog (`temp_ai_training_2026` on swa-dev)
+- Access to a Databricks workspace with serverless compute and Unity Catalog (your team's training workspace)
+- `USE CATALOG` and `CREATE SCHEMA` on the lab catalog (`temp_ai_training_2026` by default; your instructor will tell you if it's different)
 - `CAN USE` on a SQL warehouse
 - Genie Code with partner-powered AI features enabled (Missions 1–5)
 - Optional Mission 7 only: Genie App Builder (the *Governed agentic app-building* preview and a lab App Space). See the instructor guide.

@@ -41,6 +41,8 @@ Get your own copy of the lab, load the data into your own schema, and see your p
    ![Clone dialog](assets/m0_clone_dialog.png)
 
    Work only in your copy from here on.
+
+   **Or, from GitHub:** in your home folder, **Create** → **Git folder**, paste the lab's GitHub URL, and name it `swa-ops-lakeflow-lab`.
 2. **Run setup.** In your copy, open `src/setup/00_setup`. Compute should already say **Serverless** (top right). Click **Run all**. It takes 1–5 minutes and:
    - creates your schema `temp_ai_training_2026.<you>` and a volume named `raw`
    - loads three folders of raw files into the volume (flights, weather history, airports)

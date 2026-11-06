@@ -33,3 +33,8 @@ targets:
   dev:
     mode: development
     default: true
+
+  # Separate target (and deployment state) for a second workspace, e.g. an FEVM demo workspace:
+  #   databricks bundle deploy -t demo -p <profile> --var catalog=<catalog>
+  demo:
+    mode: development

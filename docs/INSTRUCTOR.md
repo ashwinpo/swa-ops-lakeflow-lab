@@ -78,7 +78,7 @@ Common issues:
 | Symptom | Cause / fix |
 |---|---|
 | `No module named 'utilities'` in the pipeline | Pipeline root folder isn't `my_pipeline/`. Settings → root folder. (`metar_source.py` registers itself for pickling; the root folder just has to be on the path.) |
-| No **Build** tab under Apps | Governed agentic app-building preview off, or learner not on the App Space. Use the pro-code fallback in Mission 7. |
+| No **Build** in Databricks Apps (app switcher) | Governed agentic app-building preview off, or learner not on the App Space. Use the pro-code fallback in Mission 7. |
 | Dashboard live panel is stale | Dashboard cache. Add a dashboard schedule, or click Refresh. |
 | `lab.raw_path` unresolved / path not found | Pipeline configuration key missing or misspelled. Settings → Configuration. |
 | `bronze_metar_live` rows all `source = 'synthetic'` | aviationweather.gov unreachable from serverless at that moment. The lab still works; the expectation counts these rows. |

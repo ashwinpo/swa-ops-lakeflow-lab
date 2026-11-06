@@ -17,11 +17,15 @@ You decide the layout and anything else it does.
 
 ## Before you start
 
-Genie App Builder builds apps inside an **App Space** that your instructor has set up for the training. Sidebar → **Apps**. You should see a **Build** tab and **App Spaces**. If you don't, tell your instructor (the workspace needs the *Governed agentic app-building* preview, and you need access to the lab App Space).
+Apps aren't in the workspace sidebar anymore. Open the **app switcher** (the 9-dot grid at the top right) → **Databricks Apps**. (If you go to Compute → Apps you'll see "Apps now has a new home" with a button to the same place.)
+
+![Apps moved to the app switcher](assets/m7_apps_new_home.png)
+
+Genie App Builder builds apps inside an **App Space** that your instructor set up for the training. In Databricks Apps you should see a **Build** option and **App Spaces**. If you only see **Apps** and **Create app**, tell your instructor: the workspace needs the *Governed agentic app-building* preview, and you need access to the lab App Space.
 
 ## Steps (the what, not the how)
 
-1. **Apps** → **Build** → pick the lab App Space → name the app `<you>-weather-watch`.
+1. **Databricks Apps** → **Build** → pick the lab App Space → name the app `<you>-weather-watch`.
 2. Describe the app. Look at the preview. Ask for changes until it does what the duty manager needs.
 3. **Deploy** it. Open it, try it, and **share** it with a neighbor (**Can use**).
 4. Ask your neighbor to use it without explanation for one minute. What confused them? Fix one thing.
@@ -60,6 +64,6 @@ Ask your instructor which SQL warehouse is shared to the App Space, and name it 
 
 ## If Genie App Builder isn't available
 
-Use the pro-code path: Apps → **Create app** → **Custom**, add a SQL warehouse resource named `sql-warehouse` and the `sql` user authorization scope, and deploy the reference Streamlit app in `app/` from your lab folder. Then use Genie Code in the workspace editor to add the watch list. See `app/README.md`.
+Use the pro-code path: **Databricks Apps** → **Create app** → **Custom**, add a SQL warehouse resource named `sql-warehouse` and the `sql` user authorization scope, and deploy the reference Streamlit app in `app/` from your lab folder. Then use Genie Code in the workspace editor to add the watch list. See `app/README.md`.
 
 Next: [Wrap-up](08-wrap-up.md)

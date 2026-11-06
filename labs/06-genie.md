@@ -10,7 +10,7 @@ The old dashboard's last problem: every follow-up question became an email. Geni
 
 | | **Genie on the dashboard** | **Standalone Genie agent** | **Genie inside an app** |
 |---|---|---|---|
-| How | Publish with **Enable Genie** on. A companion agent is created from the dashboard's datasets, or you link an existing agent. | Sidebar → **Genie** → **New**. Pick tables, write instructions, add example questions. | An app calls a Genie agent (Mission 7). |
+| How | Publish with **Enable Genie** on. A companion agent is created from the dashboard's datasets, or you link an existing agent. | Sidebar → **Genie Agents** → **New**. Pick tables, write instructions, add example questions. | An app calls a Genie agent (Mission 7). |
 | Users ask about | What's on this dashboard | A whole subject area, across many tables | Whatever the app is for, inside its workflow |
 | You can tune | Little. The companion agent is rebuilt from the dashboard when you republish; its instructions can't be edited. | Instructions, example SQL, trusted answers, table and column descriptions | Same as the agent it uses |
 | Good when | Viewers want "why is this number high?" next to the chart | Analysts and leaders explore beyond one dashboard | The question is one step in a task |

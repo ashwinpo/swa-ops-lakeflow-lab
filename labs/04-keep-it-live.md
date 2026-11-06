@@ -15,7 +15,7 @@ Make the pipeline update on its own, and choose how often. Then add a **live sum
 | Option | How | Good for | Cost |
 |---|---|---|---|
 | **Triggered on a schedule** | Pipeline editor → **Schedule** → every N minutes | Data that arrives every few minutes; most dashboards | Pays only while each update runs |
-| **Continuous** | Pipeline settings → pipeline mode **Continuous** | Seconds-level freshness | Compute runs all the time |
+| **Continuous** | Gear icon → **Pipeline mode** (pencil) → **Continuous** | Seconds-level freshness | Compute runs all the time |
 
 Pick one for your pipeline and write down why. (For weather, every 5–15 minutes is plenty. Please don't leave a continuous pipeline running after the session.)
 
@@ -33,7 +33,7 @@ Join your **latest report per airport** (from the live stream) to your **histori
 
 <details><summary>Hint 1</summary>
 
-The **Schedule** button is in the pipeline editor's top bar. It creates a job that runs the pipeline.
+The **Schedule** button is the calendar icon in the pipeline editor's top bar, next to the gear. It creates a job that runs the pipeline.
 </details>
 
 <details><summary>Hint 2</summary>

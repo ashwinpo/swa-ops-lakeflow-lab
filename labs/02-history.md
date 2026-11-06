@@ -22,7 +22,7 @@ Add to your pipeline:
 ## What you need to know
 
 - Your raw path: `/Volumes/temp_ai_training_2026/<you>/raw` with `bts/`, `weather_history/`, `reference/airports.csv`.
-- Set it once as a pipeline **configuration** value (pipeline **Settings** → **Configuration**, e.g. key `lab.raw_path`) so your code doesn't hard-code it. SQL can reference it as `${lab.raw_path}`.
+- Set it once as a pipeline **configuration** value (gear icon → **Configuration** → **Add configuration**, at the bottom of the settings panel; e.g. key `lab.raw_path`) so your code doesn't hard-code it. SQL can reference it as `${lab.raw_path}`.
 - **Flight category** (FAA): LIFR if ceiling < 500 ft or visibility < 1 mi; IFR if < 1,000 ft or < 3 mi; MVFR if ≤ 3,000 ft or ≤ 5 mi; otherwise VFR. **Ceiling** = the lowest cloud layer that is BKN, OVC, or VV.
 - Weather history `valid` is local time at the airport, the same as BTS scheduled times.
 

@@ -21,8 +21,8 @@ Everything is in the left sidebar. You'll use these, in this order:
 | **Jobs & Pipelines** | Create and run pipelines; schedules. | 1–4 |
 | **SQL Editor** | Run ad-hoc SQL. | 2–3 |
 | **Dashboards** | AI/BI dashboards. | 5 |
-| **Genie** | Genie agents (natural-language Q&A on your data). | 6 |
-| **Apps** (sometimes under **Compute**) | Databricks Apps and Genie App Builder. | 7 |
+| **Genie Agents** | Natural-language Q&A on your data. | 6 |
+| **App switcher** (the 9-dot grid, top right) → **Databricks Apps** | Databricks Apps and Genie App Builder. Apps are no longer in the sidebar. | 7 |
 
 **Genie Code** is the AI assistant icon in the upper-right corner of most pages. It's your main building tool from Mission 1 on.
 
@@ -34,9 +34,14 @@ Get your own copy of the lab, load the data into your own schema, and see your p
 
 ## Steps
 
-1. **Copy the lab.** Sidebar → **Workspace** → `Shared` → `swa-ops-lakeflow-lab`. Open the ⋮ menu on the folder and copy (or clone) it into your home folder (`Users/<your email>`). Work only in your copy from here on.
-   - If you don't see a copy/clone option for folders, ask your instructor for the Git folder URL and create a Git folder in your home folder instead.
-2. **Run setup.** In your copy, open `src/setup/00_setup`. In the compute picker (top right), choose **Serverless**. Click **Run all**. It takes 1–5 minutes and:
+1. **Copy the lab.** Sidebar → **Workspace** → `Shared` → `swa-ops-lakeflow-lab`. Open the ⋮ menu at the top right of the folder page → **Clone**. Two things to change in the dialog:
+   - **New name:** `swa-ops-lakeflow-lab` (remove the `(Clone)` prefix)
+   - **Clone to:** click **Browse** → `Users` → your email. The default is `Shared`, which would put your copy where everyone works.
+
+   ![Clone dialog](assets/m0_clone_dialog.png)
+
+   Work only in your copy from here on.
+2. **Run setup.** In your copy, open `src/setup/00_setup`. Compute should already say **Serverless** (top right). Click **Run all**. It takes 1–5 minutes and:
    - creates your schema `temp_ai_training_2026.<you>` and a volume named `raw`
    - loads three folders of raw files into the volume (flights, weather history, airports)
    - creates `my_pipeline/` in your lab folder, with the live-weather data source already inside

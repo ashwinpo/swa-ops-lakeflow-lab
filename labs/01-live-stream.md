@@ -18,9 +18,20 @@ Create a pipeline with a **streaming table** of live weather reports. Run it twi
 
 ## Steps (the what, not the how)
 
-1. **Create a pipeline from your folder.** Sidebar → **Jobs & Pipelines** → **Create** (or **New**) → **ETL pipeline**. Choose the option to **add existing assets / source code**, and point it at your `my_pipeline` folder as the **root folder** and `my_pipeline/transformations` as the source folder. Set the default catalog `temp_ai_training_2026` and schema = yours. Name it `<you>_ops`.
+1. **Create a pipeline and point it at your folder.** Sidebar → **Jobs & Pipelines** → **ETL pipeline** (under *Create new*). The editor opens right away with a new pipeline called *New Pipeline <date>* and its own starter folder. That's expected. Now point it at your `my_pipeline/` folder:
+   - Click the **gear** (Settings) in the top bar.
+   - **Pipeline name:** pencil icon → `<you>_ops`.
+   - **Code assets** → **Configure paths**. Set **Pipeline root folder** to `.../swa-ops-lakeflow-lab/my_pipeline` and **Source code paths** to `.../swa-ops-lakeflow-lab/my_pipeline/transformations/` (use the folder icons to browse). **Save**.
+   - **Default location for data assets** → **Edit catalog and schema** → `temp_ai_training_2026` and your schema.
+   - Close the `my_transformation.py` tab if it's still open. It now shows **Excluded** because it's not in your source folder. You can delete that starter folder later.
+
+   ![Pipeline settings](assets/m1_pipeline_settings.png)
+   ![Configure paths](assets/m1_configure_paths.png)
 2. **Read the data source before you use it.** Open `utilities/metar_source.py`. Read the docstring at the top. Then ask Genie Code to explain it to you. You should be able to answer: what are the options, and how does the stream avoid writing the same report twice?
-3. **Declare the streaming table.** Ask Genie Code to create a streaming table from the `metar` data source in a new file under `transformations/`. Name and options are up to you.
+3. **Declare the streaming table.** Open Genie Code (the sparkle icon in the top bar or on the right edge). Ask it to create a streaming table from the `metar` data source in a new file under `transformations/`. Name and options are up to you. Genie Code writes the file and may run the pipeline for you.
+   - **Its changes aren't saved until you accept them.** At the bottom of the Genie Code panel you'll see **1 asset** with **Accept all / Reject all**. Review the file, then click **Accept all**.
+
+   ![Accept Genie Code's changes](assets/m1_genie_code_accept.png)
 4. **Run the pipeline.** Look at the graph, the table preview, and the row count.
 5. **Run it again** a few minutes later. Compare the row counts.
 

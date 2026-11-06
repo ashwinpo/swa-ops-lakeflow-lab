@@ -1,4 +1,6 @@
-# Mission 7 — Build an app with Genie App Builder
+# Mission 7 (optional) — Build an app with Genie App Builder
+
+**Optional.** Do this if you have time and your workspace has Genie App Builder. The core lab ends at Mission 6.
 
 **Time:** 30 min · **You'll use:** Apps, Genie App Builder · **Docs:** [Genie App Builder](https://docs.databricks.com/aws/en/dev-tools/databricks-apps/genie-app-builder)
 
@@ -42,7 +44,7 @@ Genie App Builder builds apps inside an **App Space** that your instructor set u
 
 - The app is running and shows your live and historical data.
 - Your neighbor can use it.
-- `check_progress`: **Mission 7** passes.
+- `check_progress`: **Mission 7 (optional)** passes.
 
 ## Things to notice
 

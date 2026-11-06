@@ -35,9 +35,9 @@ IEM weather CSVs ──(Auto Loader)──► bronze_weather_history ──► s
 | 2 | [Bring in history and clean it](labs/02-history.md) | Auto Loader, materialized views, pipeline configuration, prompting with context | 30 min |
 | 3 | [Join weather to flights, add quality rules](labs/03-join-quality.md) | Joins, expectations, fixing failures with Genie Code | 25 min |
 | 4 | [Keep it live](labs/04-keep-it-live.md) | Scheduled vs continuous pipelines, freshness and cost | 10 min |
-| 5 | [Rebuild the dashboard with AI](labs/05-dashboard.md) | AI/BI dashboards with Genie Code, publishing, refresh schedules, Tableau migration | 30 min |
-| 6 | [Decide where Genie lives](labs/06-genie.md) | Dashboard Genie vs standalone Genie agent vs Genie in an app | 20 min |
-| 7 | [Build an app with Genie App Builder](labs/07-app.md) | Genie App Builder, App Spaces, user authorization, sharing | 30 min |
+| 5 | [Rebuild the dashboard with AI](labs/05-dashboard.md) | AI/BI dashboards with Genie Code, publishing with Genie enabled, refresh schedules, Tableau migration | 30 min |
+| 6 | [Test your dashboard's Genie, decide if you need more](labs/06-genie.md) | Dashboard Genie vs standalone Genie agent vs Genie in an app | 20 min |
+| 7 | *Optional:* [Build an app with Genie App Builder](labs/07-app.md) | Genie App Builder, App Spaces, user authorization, sharing | 30 min |
 | — | [Wrap-up](labs/08-wrap-up.md) | Show and tell, patterns, cleanup | 10 min |
 
 Each mission gives a goal, a "done when" test, prompt ingredients (not finished prompts), and a hint ladder. Learners write their own prompts.
@@ -54,7 +54,7 @@ Each mission gives a goal, a "done when" test, prompt ingredients (not finished 
 - `USE CATALOG` and `CREATE SCHEMA` on the lab catalog (`temp_ai_training_2026` on swa-dev)
 - `CAN USE` on a SQL warehouse
 - Genie Code with partner-powered AI features enabled (Missions 1–5)
-- Genie App Builder: the *Governed agentic app-building* preview and a lab App Space (Mission 7). See the instructor guide.
+- Optional Mission 7 only: Genie App Builder (the *Governed agentic app-building* preview and a lab App Space). See the instructor guide.
 
 ## Instructors
 

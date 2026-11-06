@@ -1,4 +1,4 @@
-# Mission 6 — Decide where Genie lives
+# Mission 6 — Test your dashboard's Genie, then decide if you need more
 
 **Time:** 20 min · **You'll use:** AI/BI dashboards, Genie · **Docs:** [Genie on dashboards](https://docs.databricks.com/aws/en/dashboards/genie-spaces)
 
@@ -17,8 +17,14 @@ The old dashboard's last problem: every follow-up question became an email. Geni
 
 ## Your goal
 
-1. Pick **one** option for Ops, implement it, and ask it at least **five** questions.
-2. Write two or three sentences in the dashboard's text box (or a notebook cell) explaining **why** you picked it for this audience.
+Your dashboard already has Genie (Mission 5). Now find its limits.
+
+1. On the **published** dashboard, ask the dashboard's Genie the questions below. Note which ones it answers well and which it can't.
+   - **Where's Genie?** Hover over any chart. A small **Ask Genie** sparkle icon appears next to its ⋮ menu. Click it and an **Ask Genie anything…** box opens, scoped to that chart; the Genie panel opens on the right when you ask. You can remove the chart from the context (✕) to ask about the whole dashboard.
+
+   ![Ask Genie on a widget](assets/m6_ask_genie.png)
+2. Decide: is dashboard Genie enough for Ops, or do they also need a **standalone Genie agent** (or Genie inside an app)? Write two or three sentences explaining why, in a text box on the dashboard or a notebook cell.
+3. **Optional:** if you decided a standalone agent is worth it, build it (Sidebar → **Genie Agents** → **New**) and ask it the same questions. Compare.
 
 ## Questions to try
 
@@ -28,20 +34,20 @@ The old dashboard's last problem: every follow-up question became an email. Geni
 4. Which hour of the day is worst for delays at Denver?
 5. Is IFR without thunderstorms really better than VFR? Why might that be?
 
-For each, click **Show code** at least once. Is the SQL doing what you meant?
+For each, click **Show generated code** at least once. Is the SQL doing what you meant?
 
-## If you build a standalone agent
+## If you build a standalone agent (optional)
 
 Add instructions with the definitions people will assume: what "delayed" means (15+ minutes), what "bad weather" means (IFR or LIFR), that history is June–August 2026, and that live conditions are current but not joined to current flights. When an answer is right, save it as a trusted answer. When it's wrong, fix the SQL and save the correct version.
 
 ## Done when
 
-- Genie answers questions 1–3 correctly on your data.
-- Your "why this option" note exists.
+- Your dashboard's Genie answers questions 1–3 on your data.
+- Your "is dashboard Genie enough?" note exists.
 - `check_progress`: **Mission 6** passes.
 
 ## Reflect
 
 - Your neighbor picked differently. Compare reasons. Which would you choose for station leaders on their phones? For the Ops analytics team?
 
-Next: [Mission 7 — Build an app with Genie App Builder](07-app.md)
+Next: [Mission 7 (optional) — Build an app with Genie App Builder](07-app.md), or skip to the [Wrap-up](08-wrap-up.md)

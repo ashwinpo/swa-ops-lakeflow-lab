@@ -4,9 +4,9 @@
 
 ## Show and tell
 
-Pair up. In two minutes each, show your dashboard and app, and answer:
-1. How fresh is the data on your screen, and what decides that?
-2. Where did you put Genie, and why?
+Pair up. In two minutes each, show your dashboard (and app, if you built one), and answer:
+1. How fresh is the data on your dashboard, and what decides that?
+2. Is dashboard Genie enough for Ops, or would you add a standalone agent? Why?
 3. One prompt that worked well, and one that didn't.
 
 ## What you built, and the pattern behind it
@@ -27,7 +27,7 @@ Pair up. In two minutes each, show your dashboard and app, and answer:
 Please do this before you leave:
 1. **Jobs & Pipelines** → your pipeline's schedule job → **Pause** (or delete it). If you used continuous mode, stop the pipeline.
 2. **Dashboards** → your dashboard → remove the schedule.
-3. **Apps** → your app → **Stop**.
+3. If you built an app: app switcher → **Databricks Apps** → your app → **Stop**.
 4. Your schema is in a temporary catalog that will be deleted after the training. To delete it yourself now: `DROP SCHEMA temp_ai_training_2026.<you> CASCADE;`
 
 ## Keep going

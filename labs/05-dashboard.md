@@ -15,17 +15,26 @@ Its problems are in the footer: data up to 24 hours old, an extract that breaks,
 Rebuild this dashboard as an **AI/BI dashboard**, directly on your pipeline tables. No extract and no copy of the data. Build it mostly by describing it to **Genie Code**. It should:
 - cover the same panels (KPIs, current conditions map, delay rate by weather, daily trend, worst days, filters)
 - show **live** conditions from your streaming data
-- be **published** and **refresh on a schedule**
+- be **published with Genie enabled**, so viewers can ask follow-up questions next to the charts
+- **refresh on a schedule**
 
 It doesn't need to look identical. Make it better if you can.
 
 ## Steps (the what, not the how)
 
 1. Sidebar → **Dashboards** → **Create dashboard**. Genie Code is in the middle of the empty canvas.
-2. Describe what you want. Reference your tables with `@` (type `@` and pick from the list).
+2. In the Genie Code panel, click **New chat** first if it still shows an earlier conversation (from your pipeline). Then describe what you want. Reference your tables with `@` (type `@` and pick from the list), or name them in full (`catalog.schema.table`).
 3. Review what it builds. Fix what's wrong by asking, not by clicking. Then polish by hand if you like.
-4. **Publish** it. Notice the **Enable Genie** option. Leave it as is for now; Mission 6 is about that choice.
-5. Add a **schedule** so it refreshes.
+4. **Publish** it. The publish dialog asks a question that matters for real dashboards: **whose permissions do viewers' queries run with?**
+   - **Share data permission** (default): everyone sees the data as *you* see it, and results are cached and shared. Fast, but viewers see data they might not be granted directly.
+   - **Individual data permission**: each viewer's own Unity Catalog access applies. Right for governed or sensitive data; more queries run.
+
+   Pick one and be ready to say why. For this lab's public data, either is fine. For SWA data with row filters or masks, you'd normally choose individual.
+
+   ![Publish dialog](assets/m5_publish_permissions.png)
+
+   Genie is turned on for published dashboards by default. There's no toggle in this dialog. After publishing, a **sharing** dialog opens; close it and click **View published**.
+5. On the published view, click **Schedule** (top right) and add a refresh schedule.
 
 ### Prompt ingredients
 
@@ -37,7 +46,12 @@ It doesn't need to look identical. Make it better if you can.
 ## Done when
 
 - The dashboard has at least 4 widgets, including one on live conditions.
-- It's published and has a refresh schedule.
+- It's published, and on the published view you can ask Genie a question (see Mission 6 for where the button is).
+
+What a finished dashboard looks like (yours will differ):
+
+![Published dashboard](assets/m5_published_dashboard.png)
+- It has a refresh schedule.
 - After your pipeline's next scheduled run and the dashboard's next refresh, the live panel shows newer data. Check the "last observation" time.
 - `check_progress`: **Mission 5** checks pass.
 

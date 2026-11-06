@@ -200,7 +200,7 @@ for d in dashboards:
 check(5, "Dashboard has 4+ widgets", widgets >= 4, f"{widgets} widgets", "Match the panels on the legacy Tableau mock.")
 check(5, "Dashboard shows live data", uses_live, "",
       "At least one widget should read the live weather (your streaming table or something built on it).")
-check(5, "Dashboard published", published, "", "Click Publish.")
+check(5, "Dashboard published (Genie is on by default)", published, "", "Click Publish, choose a data permission, then View published.")
 check(5, "Dashboard refresh schedule", sched, "",
       "Dashboards cache results. Without a schedule, new pipeline data won't show up on its own. Schedule → Add schedule.")
 
@@ -230,19 +230,20 @@ check(6, "Genie is answering questions on your data", mine or published,
 apps = [a for a in w.apps.list()
         if a.creator == me and a.create_time and datetime.fromisoformat(a.create_time.replace("Z", "+00:00")) >= recent]
 running = [a for a in apps if a.compute_status and "ACTIVE" in str(a.compute_status.state)]
-check(7, "You built an app", apps, ", ".join(a.name for a in apps), "Apps → Build (Genie App Builder). See labs/07-app.md.")
+check(7, "You built an app", apps, ", ".join(a.name for a in apps), "App switcher (9-dot grid) → Databricks Apps → Build. See labs/07-app.md.")
 check(7, "It's running", running, ", ".join(a.url or a.name for a in running), "Open the app page and click Start, or Deploy.")
 
 # COMMAND ----------
 
 MISSIONS = {0: "Setup", 1: "Live stream", 2: "History + clean", 3: "Join + quality",
-            4: "Keep it live", 5: "Dashboard", 6: "Genie", 7: "App"}
+            4: "Keep it live", 5: "Dashboard", 6: "Genie", 7: "App (optional)"}
+CORE = [m for m in MISSIONS if m != 7]
 lines, done_missions = [], 0
 for m, title in MISSIONS.items():
     rows = [r for r in results if r[0] == m]
     required = [r for r in rows if not r[1].startswith("Bonus")]
     ok = required and all(r[2] for r in required)
-    done_missions += bool(ok)
+    done_missions += bool(ok) and m in CORE
     lines.append(f"\nMission {m} — {title}: {'DONE' if ok else 'in progress'}")
     for _, name, passed, detail, hint in rows:
         mark = "[x]" if passed else "[ ]"
@@ -250,7 +251,10 @@ for m, title in MISSIONS.items():
         if not passed and hint:
             lines.append(f"        hint: {hint}")
 
-rank = ["Ground crew", "Ground crew", "Ramp agent", "Dispatcher", "Dispatcher", "First officer", "First officer", "Captain", "Chief pilot"][done_missions]
-report = f"{me}  ·  {catalog}.{schema}  ·  {done_missions}/{len(MISSIONS)} missions done  ·  rank: {rank}\n" + "\n".join(lines)
+rank = ["Ground crew", "Ground crew", "Ramp agent", "Dispatcher", "Dispatcher", "First officer", "First officer", "Captain"][done_missions]
+app_done = all(r[2] for r in results if r[0] == 7)
+if done_missions == len(CORE) and app_done:
+    rank = "Chief pilot"
+report = f"{me}  ·  {catalog}.{schema}  ·  {done_missions}/{len(CORE)} core missions done  ·  rank: {rank}\n" + "\n".join(lines)
 print(report)
 dbutils.notebook.exit(report)
